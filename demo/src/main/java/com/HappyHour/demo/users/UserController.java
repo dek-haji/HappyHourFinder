@@ -17,7 +17,7 @@ public class UserController {
     @GetMapping
     public List<User> getUser() {
         ArrayList<User> userList = new ArrayList<User>();
-        User user1 =  new User(1, "haj");
+        User user1 =  new User(1, "haj", "dekhaji@emil.com");
         userList.add( user1);
         return  userList;
     }
