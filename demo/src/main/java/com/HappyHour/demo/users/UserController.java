@@ -1,10 +1,11 @@
 package com.HappyHour.demo.users;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +23,15 @@ public class UserController {
         return  userList;
     }
 
-    @PostMapping(path = "users")
-    public void addUser()
-    {
+    @PostMapping(path = "users",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> create(@RequestBody User newUser) {
+        User user = userService.save(newUser);
+        if (user == null) {
+            throw new ServerException();
+        } else {
+            return new ResponseEntity<>(user, HttpStatus.CREATED);
+        }
     }
 }

@@ -1,8 +1,5 @@
 package com.HappyHour.demo.restaurants;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +19,18 @@ public class restaurantsController {
 
 
 
-    @PostMapping(path = "restaurants")
-    public void addRestaurants(){
-
+    @PostMapping(path = "restaurants",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<restaurants> createRestaurant(@RequestBody restaurants newRestaurant){
+    restaurants restaurants = userServices.save(newRestaurant);
+    if(restaurants == null)
+    {
+        throw new ServerException();
+    } else {
+        return new ResponseEntity<>(restaurants, HttpStatus.CREATED);
     }
+    }
+
 
 }
